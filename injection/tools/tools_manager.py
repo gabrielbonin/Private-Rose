@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Tools Manager
+Handles CSLOL tools detection and validation
+"""
+
+from pathlib import Path
+from typing import Dict, Optional
+
+from utils.core.logging import get_logger
+
+log = get_logger()
+
+LTK_PATCHER_HOST = "ltk_patcher_host.exe"
+LTK_PATCHER_DLL = "ltk_patcher_dll.dll"
+
+
+class ToolsManager:
+    """Manages CSLOL tools detection and validation"""
+    
+    def __init__(self, tools_dir: Path):
+        self.tools_dir = tools_dir
+    
+    def check_tools_available(self) -> bool:
+        """Check if the runtime injection tool is present."""
+        required_tools = [
+            "mod-tools.exe",
+            "cslol-dll.dll",
+        ]
+        missing_tools = []
+        for tool in required_tools:
+            if not (self.tools_dir / tool).exists():
+                missing_tools.append(tool)
+        
+        if missing_tools:
+            log.warning(f"Missing runtime injection dependencies: {missing_tools}")
+            log.warning("Please place mod-tools.exe in injection/tools/")
+            log.warning("Download from: https://github.com/CommunityDragon/CDTB")
+            return False
+        
+        return True
+    
+    def detect_tools(self) -> Dict[str, Path]:
+        """Detect runtime injection tools."""
+        tools = {
+            "modtools": self.tools_dir / "mod-tools.exe",
+        }
+        for name, exe in tools.items():
+            if not exe.exists():
+                log.error(f"[INJECTOR] Missing tool: {exe}")
+        return tools
+
+    def detect_ltk_patcher(self) -> Optional[Path]:
+        """Return the LTK patcher host if it is installed next to its hook DLL.
+
+        The LTK Manager patcher (ltk_patcher_host.exe + ltk_patcher_dll.dll)
+        replaces the legacy runoverlay/cslol-dll.dll pair and is refreshed
+        faster after League patches. Like cslol-dll.dll, users provide it.
+        """
+        host = self.tools_dir / LTK_PATCHER_HOST
+        if host.exists() and (self.tools_dir / LTK_PATCHER_DLL).exists():
+            return host
+        return None
+
