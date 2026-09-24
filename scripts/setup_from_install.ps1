@@ -51,13 +51,17 @@ $hashes = "$roseInstall\injection\tools\hashes.game.txt"
 if (Test-Path $hashes) { Copy-Item $hashes $tools -Force }
 
 Write-Host "== LTK Manager patcher"
-$ltkRoots = @("$env:LOCALAPPDATA\LTK Manager", "$env:ProgramFiles\LTK Manager", "$env:LOCALAPPDATA\Programs", $env:ProgramFiles)
-$host_ = Find-File 'ltk_patcher_host.exe' $ltkRoots
-if (-not $host_) { Fail "LTK Manager nao encontrado / not found. Instale / install: https://github.com/LeagueToolkit/ltk-manager/releases" }
-$dll = Join-Path (Split-Path $host_) 'ltk_patcher_dll.dll'
-if (-not (Test-Path $dll)) { Fail "ltk_patcher_dll.dll nao encontrado / not found: $(Split-Path $host_)" }
-Copy-Item $host_, $dll $tools -Force
-Write-Host "   $host_"
+if ((Test-Path "$tools\ltk_patcher_host.exe") -and (Test-Path "$tools\ltk_patcher_dll.dll")) {
+    Write-Host "   bundled / incluido no repositorio"
+} else {
+    $ltkRoots = @("$env:LOCALAPPDATA\LTK Manager", "$env:ProgramFiles\LTK Manager", "$env:LOCALAPPDATA\Programs", $env:ProgramFiles)
+    $host_ = Find-File 'ltk_patcher_host.exe' $ltkRoots
+    if (-not $host_) { Fail "LTK Manager nao encontrado / not found. Instale / install: https://github.com/LeagueToolkit/ltk-manager/releases" }
+    $dll = Join-Path (Split-Path $host_) 'ltk_patcher_dll.dll'
+    if (-not (Test-Path $dll)) { Fail "ltk_patcher_dll.dll nao encontrado / not found: $(Split-Path $host_)" }
+    Copy-Item $host_, $dll $tools -Force
+    Write-Host "   $host_"
+}
 
 Write-Host "== Python .venv"
 $venvPy = Join-Path $repo '.venv\Scripts\python.exe'
