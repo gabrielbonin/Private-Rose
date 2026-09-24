@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **Patch 16.19:** esta branch tem a correção do [PR #273](https://github.com/Alban1911/Rose/pull/273). Veja / see **[SETUP_16.19.md](SETUP_16.19.md)** (PT-BR / English).
+
 # 🌹 Rose - Effortless Skin Changer for LoL
 
 <div align="center">

@@ -11,7 +11,7 @@ if not exist "injection\tools\ltk_patcher_host.exe" goto setup
 goto run
 
 :setup
-echo Primeira execucao: preparando o Rose...
+echo Primeira execucao: preparando o Rose... / First run: setting up Rose...
 powershell -NoProfile -ExecutionPolicy Bypass -File "scripts\setup_from_install.ps1"
 if %errorlevel% neq 0 (
     pause
@@ -19,8 +19,8 @@ if %errorlevel% neq 0 (
 )
 
 :run
-echo Iniciando o Rose. Deixe esta janela aberta enquanto joga.
+echo Iniciando o Rose. Deixe esta janela aberta enquanto joga. / Starting Rose. Keep this window open while playing.
 ".venv\Scripts\python.exe" main.py
 echo.
-echo Rose fechou (codigo %errorlevel%).
+echo Rose fechou / Rose exited (%errorlevel%).
 pause

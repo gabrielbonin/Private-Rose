@@ -8,7 +8,7 @@ $pengu = Join-Path $repo 'Pengu Loader'
 
 function Fail($msg) {
     Write-Host ""
-    Write-Host "ERRO: $msg" -ForegroundColor Red
+    Write-Host "ERRO / ERROR: $msg" -ForegroundColor Red
     exit 1
 }
 
@@ -33,39 +33,39 @@ foreach ($cand in @('py', 'python')) {
         if ($ok -eq 'True') { $pyExe = $cand; $pyArgs = $candArgs; break }
     } catch {}
 }
-if (-not $pyExe) { Fail "Python 3.11 ou mais novo nao encontrado. Instale em https://www.python.org/downloads/ (marque 'Add python.exe to PATH')." }
+if (-not $pyExe) { Fail "Python 3.11+ nao encontrado / not found. Instale / install: https://www.python.org/downloads/ (Add python.exe to PATH)." }
 
-Write-Host "== Arquivos do Rose instalado"
+Write-Host "== Rose (instalado / installed)"
 $roseInstall = Join-Path $env:ProgramFiles 'Rose\_internal'
-if (-not (Test-Path $roseInstall)) { Fail "Rose instalado nao encontrado em '$roseInstall'. Instale o Rose oficial primeiro." }
+if (-not (Test-Path $roseInstall)) { Fail "Rose instalado nao encontrado / official Rose not found: '$roseInstall'." }
 $copies = @(
     @{ From = "$roseInstall\injection\tools\cslol-dll.dll"; To = $tools },
     @{ From = "$roseInstall\Pengu Loader\Pengu Loader.exe"; To = $pengu },
     @{ From = "$roseInstall\Pengu Loader\Pengu Loader.exe.config"; To = $pengu }
 )
 foreach ($c in $copies) {
-    if (-not (Test-Path $c.From)) { Fail "Arquivo nao encontrado: $($c.From)" }
+    if (-not (Test-Path $c.From)) { Fail "Arquivo nao encontrado / file not found: $($c.From)" }
     Copy-Item $c.From $c.To -Force
 }
 $hashes = "$roseInstall\injection\tools\hashes.game.txt"
 if (Test-Path $hashes) { Copy-Item $hashes $tools -Force }
 
-Write-Host "== Injetor do LTK Manager"
+Write-Host "== LTK Manager patcher"
 $ltkRoots = @("$env:LOCALAPPDATA\LTK Manager", "$env:ProgramFiles\LTK Manager", "$env:LOCALAPPDATA\Programs", $env:ProgramFiles)
 $host_ = Find-File 'ltk_patcher_host.exe' $ltkRoots
-if (-not $host_) { Fail "LTK Manager nao encontrado. Instale a versao mais recente em https://github.com/LeagueToolkit/ltk-manager/releases e rode este script de novo." }
+if (-not $host_) { Fail "LTK Manager nao encontrado / not found. Instale / install: https://github.com/LeagueToolkit/ltk-manager/releases" }
 $dll = Join-Path (Split-Path $host_) 'ltk_patcher_dll.dll'
-if (-not (Test-Path $dll)) { Fail "ltk_patcher_dll.dll nao encontrado ao lado de $host_" }
+if (-not (Test-Path $dll)) { Fail "ltk_patcher_dll.dll nao encontrado / not found: $(Split-Path $host_)" }
 Copy-Item $host_, $dll $tools -Force
 Write-Host "   $host_"
 
-Write-Host "== Ambiente Python (.venv)"
+Write-Host "== Python .venv"
 $venvPy = Join-Path $repo '.venv\Scripts\python.exe'
 if (-not (Test-Path $venvPy)) { & $pyExe @pyArgs -m venv (Join-Path $repo '.venv') }
-if (-not (Test-Path $venvPy)) { Fail "Nao foi possivel criar o .venv" }
+if (-not (Test-Path $venvPy)) { Fail "Nao foi possivel criar / could not create .venv" }
 $reqs = Get-Content (Join-Path $repo 'requirements.txt') | Where-Object { $_ -match '^[A-Za-z]' -and $_ -notmatch '^pyinstaller' }
 & $venvPy -m pip install -q --disable-pip-version-check @reqs
-if ($LASTEXITCODE -ne 0) { Fail "Falha ao instalar dependencias" }
+if ($LASTEXITCODE -ne 0) { Fail "Falha ao instalar dependencias / failed to install dependencies" }
 
 Write-Host ""
-Write-Host "Pronto." -ForegroundColor Green
+Write-Host "Pronto / Done." -ForegroundColor Green
