@@ -1,5 +1,38 @@
+# 🌹 Private-Rose — Rose corrigido para o patch 16.19
+
 > [!IMPORTANT]
-> **Patch 16.19:** esta branch tem a correção do [PR #273](https://github.com/Alban1911/Rose/pull/273). Veja / see **[SETUP_16.19.md](SETUP_16.19.md)** (PT-BR / English).
+> Cópia **privada e pessoal** do Rose com a correção do [PR #273](https://github.com/Alban1911/Rose/pull/273) e o injetor do LTK Manager já incluído. **Não compartilhe este repositório** (a licença da LTK não permite repassar os binários assinados). Para outras pessoas, use a branch pública [`rose-16.19`](https://github.com/gabrielbonin/Rose/tree/rose-16.19).
+
+## 🚀 Instalar em um computador novo
+
+### 1. Pré-requisitos (uma vez só)
+- **Rose oficial** instalado ([download](https://github.com/Alban1911/Rose/releases/latest)) e aberto pelo menos uma vez, com a `cslol-dll.dll` configurada como o próprio Rose pede.
+- **Python 3.11 ou mais novo** ([download](https://www.python.org/downloads/)) — marque **"Add python.exe to PATH"** na instalação.
+- **Não** precisa instalar o LTK Manager: o injetor já está em `injection\tools`.
+
+### 2. Baixar este repositório
+**Opção A — navegador:** logado no GitHub, clique em **Code → Download ZIP** nesta página e extraia (por exemplo em `Área de Trabalho\Rose`).
+
+**Opção B — Git** (facilita atualizar; na primeira vez abre o navegador para login):
+```bash
+git clone https://github.com/gabrielbonin/Private-Rose "%USERPROFILE%\Desktop\Rose"
+```
+
+### 3. Rodar
+1. **Feche o Rose oficial** (ícone da rosa na bandeja → **Sair**). Se ele abre com o Windows, desative isso nas configurações dele.
+2. Dê dois cliques em **`INICIAR_ROSE.bat`** e aceite o pedido de administrador. A primeira execução prepara tudo sozinha (1–2 min).
+3. Deixe a janela preta aberta enquanto joga. Se os botões do Rose não aparecerem no cliente, feche e abra o cliente do League.
+
+### 4. Atualizar
+- Opção B: `git -C "%USERPROFILE%\Desktop\Rose" pull`
+- Opção A: baixe o ZIP de novo (pode copiar a pasta `.venv` da cópia antiga para não reinstalar).
+
+### Problemas?
+- O script diz o que está faltando (PT/EN). O mais comum: Rose oficial fora de `C:\Program Files\Rose`.
+- Logs: `%LOCALAPPDATA%\Rose\logs` (`rose_*.log` e `rose_runoverlay_*.log`).
+- Detalhes da correção, manutenção do injetor e versão em inglês: **[SETUP_16.19.md](SETUP_16.19.md)**.
+
+---
 
 # 🌹 Rose - Effortless Skin Changer for LoL
 

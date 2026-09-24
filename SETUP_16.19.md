@@ -24,11 +24,15 @@ Esta cópia privada já traz em `injection\tools` o injetor oficial do LTK Manag
 2. **Python 3.11 ou mais novo**: https://www.python.org/downloads/ — marque **"Add python.exe to PATH"** na instalação.
 
 ### Como usar
-1. Clone este repositório (ou **Code → Download ZIP** e extraia).
+1. Baixe este repositório: logado no GitHub, **Code → Download ZIP** e extraia; ou com Git: `git clone https://github.com/gabrielbonin/Private-Rose "%USERPROFILE%\Desktop\Rose"` (na primeira vez abre o navegador para login).
 2. Feche o Rose oficial (ícone da rosa na bandeja → Sair). Se ele abre com o Windows, desative isso nas configurações dele.
 3. Dê dois cliques em **`INICIAR_ROSE.bat`** e aceite o pedido de administrador. Na primeira vez ele prepara tudo (1–2 minutos).
 4. Deixe a janela preta aberta enquanto joga.
 5. Se os botões do Rose não aparecerem no cliente, feche e abra o cliente do League.
+
+### Atualizar
+- Com Git: `git -C "%USERPROFILE%\Desktop\Rose" pull`
+- Com ZIP: baixe de novo (pode copiar a pasta `.venv` da cópia antiga para não reinstalar).
 
 ### Manutenção
 - Logs: `%LOCALAPPDATA%\Rose\logs` (`rose_*.log` e `rose_runoverlay_*.log`).
@@ -55,11 +59,15 @@ This private copy ships the official LTK Manager **v1.21.0** patcher in `injecti
 2. **Python 3.11 or newer**: https://www.python.org/downloads/ — tick **"Add python.exe to PATH"** during install.
 
 ### Usage
-1. Clone this repo (or **Code → Download ZIP** and extract it).
+1. Get this repo: signed in to GitHub, **Code → Download ZIP** and extract it; or with Git: `git clone https://github.com/gabrielbonin/Private-Rose "%USERPROFILE%\Desktop\Rose"` (the first time it opens the browser to sign in).
 2. Quit the official Rose (rose icon in the tray → Quit). If it starts with Windows, turn that off in its settings.
 3. Double-click **`INICIAR_ROSE.bat`** and accept the administrator prompt. The first run sets everything up (1–2 minutes).
 4. Keep the black console window open while you play.
 5. If Rose's buttons don't show in the client, restart the League client.
+
+### Updating
+- With Git: `git -C "%USERPROFILE%\Desktop\Rose" pull`
+- With the ZIP: download it again (you can copy the old `.venv` folder over to skip reinstalling).
 
 ### Maintenance
 - Logs: `%LOCALAPPDATA%\Rose\logs` (`rose_*.log` and `rose_runoverlay_*.log`).
