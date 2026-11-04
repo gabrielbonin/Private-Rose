@@ -227,7 +227,7 @@ SKIN_THRESHOLD_MS_DEFAULT = 300             # Time before loadout ends to write 
 # picked before it (already staged in LTK Manager) is the one applied: with
 # less than a second, a late change could not be installed before the game.
 INJECTION_THRESHOLD_MIN_S = 1.0
-INJECTION_THRESHOLD_MAX_S = 2.0
+INJECTION_THRESHOLD_MAX_S = 4.0
 INJECTION_THRESHOLD_DEFAULT_S = 1.0
 
 

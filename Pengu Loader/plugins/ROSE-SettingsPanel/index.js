@@ -65,7 +65,7 @@
   // skin changed after the threshold is ignored, so the one staged before it
   // is applied. Under a second, a late change could not make the game.
   const THRESHOLD_MIN_S = 1.0;
-  const THRESHOLD_MAX_S = 2.0;
+  const THRESHOLD_MAX_S = 4.0;
   const THRESHOLD_DEFAULT_S = 1.0;
 
   let settingsPanel = null;
