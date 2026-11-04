@@ -11,6 +11,92 @@
 
 ---
 
+> [!IMPORTANT]
+> **Branch `rose-1.5.0` do Private-Rose (uso pessoal).** Rose 1.5.0 rodando a partir do código, antes do instalador oficial. Veja [Rose 1.5.0 local](#rose-150-local-private-rose) logo abaixo.
+
+## Rose 1.5.0 local (Private-Rose)
+
+### Por que esta branch existe
+
+- **04/11/2026:** depois do patch do League, o Rose 1.4.9 parou de injetar skins. A DLL do LTK que ele usa (1.29.2) só aceita versões do jogo até 01/11/2026 (`LTK patcher does not support game builds after 2026-11-01 04:00`).
+- **A DLL nova do LTK não resolve no 1.4.9.** Desde a 1.32, o LTK Manager baixa a DLL à parte, e o Rose 1.4.9 a recusa ("not a recognized LTK patcher DLL"). Testamos e confirmamos.
+- **O Rose 1.5.0 muda o modelo.** Em vez de usar a DLL e o host do LTK, ele controla o próprio LTK Manager pela ponte LeagueToolFlop (LTF). O código saiu em 04/11/2026, antes do instalador.
+
+Esta branch é o código oficial da 1.5.0 (`f645bac`) mais um commit nosso.
+
+### O que mudamos
+
+| Arquivo | Mudança | Motivo |
+| --- | --- | --- |
+| `config.py` | `INJECTION_THRESHOLD_MAX_S` de 2.0 para 4.0 | Com o limite em 1 s, o patcher começava depois de a partida ser criada (`joined too late`). |
+| `Pengu Loader/plugins/ROSE-SettingsPanel/index.js` | `THRESHOLD_MAX_S` de 2.0 para 4.0 | O controle de **Limite de injeção** nas Configurações acompanha o novo máximo. |
+| `run_dev.bat` | Arquivo novo | Abre o Rose pelo código, como administrador. |
+
+**Nesta branch não entra:**
+- O `ltk_launcher.exe` e o `LeagueToolFlop.dll` compilados.
+- O `Pengu Loader.exe`.
+- Os arquivos do LTK.
+
+Os dois primeiros itens já são excluídos pelo `.gitignore` do Rose. Por isso a branch não leva nenhum arquivo assinado pelo LTK, e cada PC monta o seu.
+
+### Requisitos
+
+- **Windows com o Rose oficial já instalado e aberto uma vez.** Ele baixa as skins para `%LOCALAPPDATA%\Rose` e fornece o Pengu Loader.
+- **LTK Manager 1.33.0 ou mais novo**, instalado pelo [instalador oficial](https://github.com/LeagueToolkit/ltk-manager/releases/latest). Abra uma vez e inicie o patcher, para ele baixar a DLL dele.
+- **Python 3.13.**
+- **Visual Studio C++ Build Tools** com o compilador x64, para compilar o LTF.
+
+### Como montar num PC
+
+```bat
+git clone -b rose-1.5.0 https://github.com/gabrielbonin/Private-Rose.git Rose-1.5.0
+cd Rose-1.5.0
+python -m venv .venv
+findstr /v /i pyinstaller requirements.txt > requirements-run.txt
+.venv\Scripts\python -m pip install -r requirements-run.txt
+.venv\Scripts\python scripts\build_ltf.py
+copy "C:\Program Files\Rose\_internal\Pengu Loader\Pengu Loader.exe" "Pengu Loader\"
+copy "C:\Program Files\Rose\_internal\Pengu Loader\Pengu Loader.exe.config" "Pengu Loader\"
+```
+
+- O `pyinstaller==6.3.0` fica de fora porque não existe para o Python 3.13 e só serve para gerar o `.exe`.
+- O `build_ltf.py` gera o `injection\tools\ltk_launcher.exe` e o `injection\tools\LeagueToolFlop.dll`. Um aviso sobre `vswhere.exe` pode aparecer e não atrapalha.
+
+### Como usar
+
+1. Feche o Rose instalado, pelo ícone perto do relógio, e feche o LTK Manager. O launcher da 1.5.0 se recusa a assumir um LTK Manager já aberto.
+2. Abra o `run_dev.bat` e aceite o pedido de administrador.
+3. Em **Configurações**, deixe o **Limite de injeção** em **2 s** e clique em **Salvar**. Se aparecer `joined too late` no log, suba para 2,5 ou 3 s.
+4. Escolha a skin antes do fim da contagem. Uma troca feita depois do limite é ignorada.
+
+Na contagem regressiva da seleção, o Rose abre o LTK Manager escondido, importa a skin, desativa as outras skins do perfil do LTK só para aquela partida e inicia o patcher.
+
+### Testado em 04/11/2026
+
+- **Practice Tool:** com limite de 1,11 s, a skin não apareceu, três vezes (`joined too late`, de 1,4 a 1,6 s de atraso). Com 2 s, a primeira tentativa atrasou 0,1 s, e a seguinte funcionou, com a K/DA Firestarter Ignition Akali.
+- **Partida normal:** ainda não testada.
+
+### Avisos
+
+- **Verificação do LTK:** a 1.5.0 abre o LTK Manager como se ele tivesse sido iniciado pelo Windows Explorer, para passar pela verificação do patcher do LTK (`VRF00000008`). Isso está em `native/ltf/VENDORED.md`. O LTK pode bloquear isso numa atualização futura, e antivírus podem desconfiar.
+- **Licença do patcher do LTK** (`LTK-PATCHER-LICENSE.md`, no repositório do LTK Manager): permite usar o patcher em outros programas. Quem distribuir os arquivos dele fora do instalador oficial precisa remover a assinatura do LTK. Por isso esta branch não leva esses arquivos.
+- **Riscos:** projeto não oficial, sem afiliação com a Riot Games. Use por sua conta e risco.
+
+### Quando sair o instalador oficial
+
+Instale o Rose 1.5.0 oficial e volte a usar o atalho normal. Esta branch deixa de ser necessária. Se o limite de 2 s também for curto no oficial, vale sugerir ao Rose aumentar o máximo.
+
+### Atualizar com o Rose oficial
+
+```bat
+git remote add upstream https://github.com/Alban1911/Rose
+git fetch upstream
+git merge upstream/main
+.venv\Scripts\python scripts\build_ltf.py
+```
+
+---
+
 ## Overview
 
 Rose is an open-source automatic skin changer for League of Legends that enables seamless access to all skins in the game. The application runs silently in the system tray and automatically detects skin selections during champion select, injecting the chosen skin when the game loads.
